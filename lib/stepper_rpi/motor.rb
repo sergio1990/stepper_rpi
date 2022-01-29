@@ -42,6 +42,9 @@ module StepperRpi
     end
 
     def do_steps(number_of_steps)
+      if number_of_steps.nil? || !number_of_steps.kind_of?(::Integer)
+        raise StepperRpi::MotorError, "The number of steps must be an integer value!"
+      end
       if !is_connected
         raise StepperRpi::MotorError, "The motor isn't connected! Call `#connect` before calling this method!"
       end
@@ -61,6 +64,7 @@ module StepperRpi
       @is_running_terminated = true
       sleep(0.001) while runner_thread.alive?
       @is_running_terminated = false
+      @is_running = false
     end
 
     private
@@ -90,6 +94,7 @@ module StepperRpi
       is_backward = number_of_steps < 0
       number_of_steps = number_of_steps.abs
       step_diff = is_backward ? -1 : 1
+      @is_running = true
 
       @runner_thread = Thread.new {
         number_of_steps.times do
@@ -111,9 +116,12 @@ module StepperRpi
           sleep(0.001)
 
           if @is_running_terminated
+            @is_running = false
             Thread.exit
           end
         end  
+
+        @is_running = false
       }
     end
   end

@@ -16,6 +16,6 @@ class TestStepperRpiMotor < Minitest::Test
     motor.connect
     motor.do_steps(1)
 
-    sleep(1)
+    sleep(0.01) while motor.is_running
   end
 end
