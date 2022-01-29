@@ -5,7 +5,7 @@ require_relative './gpio_adapter'
 module StepperRpi
   class Motor
     attr_accessor :speed
-    attr_reader :is_running, :position
+    attr_reader :is_running, :position, :is_connected
 
     def initialize(mode:, pins:, gpio_adapter:)
       if !StepperRpi::MODES.include?(mode)
@@ -22,6 +22,7 @@ module StepperRpi
       @pins = pins
       @gpio_adapter = gpio_adapter
       @is_running = false
+      @is_connected = false
       @position = 0
       @speed = 1
       @current_beat = -1
@@ -30,15 +31,30 @@ module StepperRpi
     end
 
     def connect
+      return if is_connected
+
       pins.each { gpio_adapter.setup_pin(_1) }
+      @is_connected = true
+    end
+
+    def disconnect
+      @is_connected = false
     end
 
     def do_steps(number_of_steps)
+      if !is_connected
+        raise StepperRpi::MotorError, "The motor isn't connected! Call `#connect` before calling this method!"
+      end
+
       stop
       run_stepper(number_of_steps)
     end
 
     def stop
+      if !is_connected
+        raise StepperRpi::MotorError, "The motor isn't connected! Call `#connect` before calling this method!"
+      end
+
       return if !runner_thread
       return if !runner_thread.alive?
 
