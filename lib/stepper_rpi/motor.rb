@@ -98,7 +98,7 @@ module StepperRpi
       @is_running = true
 
       @runner_thread = Thread.new {
-        number_of_steps.times do
+        number_of_steps.times do |step_index|
           @position += step_diff
           @current_beat += step_diff
           if @current_beat < 0
@@ -114,7 +114,11 @@ module StepperRpi
             gpio_adapter.set_pin_value(pin, value)
           end
 
-          sleep(0.001)
+          if step_index == number_of_steps - 1
+            sleep(0.001)
+          else
+            sleep(1 / speed.to_f)
+          end
 
           if @is_running_terminated
             @is_running = false
