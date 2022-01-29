@@ -11,11 +11,11 @@ module StepperRpi
       if !StepperRpi::MODES.include?(mode)
         raise StepperRpi::MotorError, "Invalid mode passed: '#{mode}'!"
       end
-      if !pins.is_kind_of?(::Array) || pins.count != 4
+      if !pins.kind_of?(::Array) || pins.count != 4
         raise StepperRpi::MotorError, "Passed pins isn't an array or the number of elements isn't 4!"
       end
-      if gpio_adapter == nil || !gpio_adapter.is_kind_of?(StepperRpi::GPIOAdapter)
-        raise StepperRpi::MotorError, "Invalid GPIO adapter passed! The income adapter is whether nil isn't inherited from the `StepperRpi::GPIOAdapter` class!"
+      if gpio_adapter == nil || !gpio_adapter.kind_of?(StepperRpi::GPIOAdapter)
+        raise StepperRpi::MotorError, "Invalid GPIO adapter passed! The income adapter is whether nil or isn't inherited from the `StepperRpi::GPIOAdapter` class!"
       end
 
       @mode = mode
@@ -27,7 +27,9 @@ module StepperRpi
       @current_beat = -1
       @is_running_terminated = false
       @beats_in_sequence = BEAT_SEQUENCES[mode].count
+    end
 
+    def connect
       pins.each { gpio_adapter.setup_pin(_1) }
     end
 

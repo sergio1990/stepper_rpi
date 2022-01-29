@@ -20,7 +20,7 @@ module StepperRpi
     yield(configuration)
   end
 
-  def motor(mode:, pins:)
+  def self.motor(mode:, pins:)
     StepperRpi::Motor.new(
       mode: mode,
       pins: pins,
