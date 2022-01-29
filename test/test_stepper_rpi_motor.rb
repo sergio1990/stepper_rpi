@@ -17,5 +17,9 @@ class TestStepperRpiMotor < Minitest::Test
     motor.do_steps(1)
 
     sleep(0.01) while motor.is_running
+
+    assert motor.is_connected
+    refute motor.is_running
+    assert_equal 1, motor.position
   end
 end
