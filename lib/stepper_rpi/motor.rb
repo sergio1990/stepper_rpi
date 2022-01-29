@@ -69,6 +69,7 @@ module StepperRpi
 
     private
 
+    # [ORANGE, YELLOW, PINK, BLUE]
     BEAT_SEQUENCES = {
       StepperRpi::Mode::FULL_STEP => [
         [1, 0, 1, 0],
@@ -78,11 +79,11 @@ module StepperRpi
       ],
       StepperRpi::Mode::HALF_STEP => [
         [1, 0, 0, 0],
-        [1, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 1, 1, 0],
+        [1, 1, 0, 0],
         [0, 1, 0, 0],
-        [0, 1, 0, 1],
+        [0, 1, 1, 0],
+        [0, 0, 1, 0],
+        [0, 0, 1, 1],
         [0, 0, 0, 1],
         [1, 0, 0, 1]
       ]
