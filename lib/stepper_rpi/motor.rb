@@ -88,11 +88,11 @@ module StepperRpi
 
     def run_stepper(number_of_steps)
       is_backward = number_of_steps < 0
-      number_of_steps = abs(number_of_steps)
+      number_of_steps = number_of_steps.abs
       step_diff = is_backward ? -1 : 1
 
       @runner_thread = Thread.new {
-        number_of_steps.each do
+        number_of_steps.times do
           @position += step_diff
           @current_beat += step_diff
           if @current_beat < 0
