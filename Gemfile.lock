@@ -1,0 +1,23 @@
+PATH
+  remote: .
+  specs:
+    stepper_rpi (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.15.0)
+    mocha (1.13.0)
+    rake (13.0.6)
+
+PLATFORMS
+  x86_64-darwin-20
+
+DEPENDENCIES
+  minitest (~> 5.0)
+  mocha
+  rake (~> 13.0)
+  stepper_rpi!
+
+BUNDLED WITH
+   2.3.5
