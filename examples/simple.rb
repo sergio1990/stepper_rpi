@@ -28,6 +28,7 @@ motor = StepperRpi.motor(
   mode: StepperRpi::Mode::FUUL,
   pins: [8, 10, 12, 16]
 )
+motor.speed = 30
 
 motor.connect
 
