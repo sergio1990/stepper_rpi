@@ -27,21 +27,21 @@ StepperRpi.configure do |config|
 end
 
 motor = StepperRpi.motor(
-  mode: StepperRpi::Mode::FUUL,
+  mode: StepperRpi::Mode::HALF_STEP,
   pins: [14, 15, 18, 23]
 )
-motor.speed = 30
+motor.speed = 70
 
 motor.connect
 
 puts "Start stepping..."
-motor.do_steps(500)
+motor.do_steps(2000)
 
-sleep(10)
-puts "After 10 seconds current position is: #{motor.position}"
+sleep(20)
+puts "After 20 seconds current position is: #{motor.position}"
 
 puts "Start stepping backwards..."
-motor.do_steps(-500)
+motor.do_steps(-1500)
 
-sleep(10)
-puts "After 10 seconds current position is: #{motor.position}"
+sleep(20)
+puts "After 20 seconds current position is: #{motor.position}"
