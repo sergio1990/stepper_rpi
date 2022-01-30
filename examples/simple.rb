@@ -11,6 +11,9 @@ class RpiGPIOAdapter < StepperRpi::GPIOAdapter
 
   def setup_pin(pin)
     gpio_pin = GPIO.new(pin, OUT)
+    # Give some time for the system to create needed files
+    # and set proper permissions
+    sleep(0.5)
     gpio_pin.set_mode(OUT)
     @pins[pin] = gpio_pin
   end
