@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "The Ruby gem providing functionality for controlling a stepper motor from the Raspberry Pi"
   spec.homepage = "https://github.com/sergio1990/stepper_rpi"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 2.7.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/sergio1990/stepper_rpi"
