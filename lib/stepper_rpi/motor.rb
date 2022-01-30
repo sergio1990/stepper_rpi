@@ -27,7 +27,8 @@ module StepperRpi
       @speed = 1
       @current_beat = -1
       @is_running_terminated = false
-      @beats_in_sequence = BEAT_SEQUENCES[mode].count
+      @beat_sequence = BEAT_SEQUENCES[mode]
+      @beats_in_sequence = @beat_sequence.count
     end
 
     def connect
@@ -89,7 +90,14 @@ module StepperRpi
       ]
     }
 
-    attr_reader :mode, :pins, :gpio_adapter, :current_beat, :runner_thread, :beats_in_sequence, :is_running_terminated
+    attr_reader :mode,
+      :pins,
+      :gpio_adapter,
+      :current_beat,
+      :runner_thread,
+      :beats_in_sequence,
+      :beat_sequence,
+      :is_running_terminated
 
     def run_stepper(number_of_steps)
       is_backward = number_of_steps < 0
@@ -106,7 +114,7 @@ module StepperRpi
           elsif @current_beat > beats_in_sequence - 1
             @current_beat = 0
           end
-          sequence = BEAT_SEQUENCES[mode][@current_beat]
+          sequence = beat_sequence[@current_beat]
           pins.zip(sequence).each do |pin_with_value|
             pin = pin_with_value[0]
             value = pin_with_value[1]
@@ -114,15 +122,19 @@ module StepperRpi
             gpio_adapter.set_pin_value(pin, value)
           end
 
+          if @is_running_terminated
+            # Give some time for the motor to complete rotation
+            sleep(0.001)
+            @is_running = false
+            Thread.exit
+          end
+
+          # If it is the last step - give some time for the motor to rotate
+          # If not - then put the delay according to the configured speed
           if step_index == number_of_steps - 1
             sleep(0.001)
           else
             sleep(1 / speed.to_f)
-          end
-
-          if @is_running_terminated
-            @is_running = false
-            Thread.exit
           end
         end  
 
