@@ -25,10 +25,6 @@ class RpiGPIOAdapter < StepperRpi::GPIOAdapter
   end
 end
 
-StepperRpi.configure do |config|
-  config.gpio_adapter = RpiGPIOAdapter.new
-end
-
 driver = StepperRpi::Drivers::ULN2003.new(
   mode: StepperRpi::Drivers::ULN2003::Mode::HALF_STEP,
   pins: [14, 15, 18, 23],
