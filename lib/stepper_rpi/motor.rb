@@ -7,38 +7,24 @@ module StepperRpi
     attr_accessor :speed
     attr_reader :is_running, :position, :is_connected
 
-    def initialize(mode:, pins:, gpio_adapter:)
-      if !StepperRpi::MODES.include?(mode)
-        raise StepperRpi::MotorError, "Invalid mode passed: '#{mode}'!"
-      end
-      if !pins.kind_of?(::Array) || pins.count != 4
-        raise StepperRpi::MotorError, "Passed pins isn't an array or the number of elements isn't 4!"
-      end
-      if gpio_adapter == nil || !gpio_adapter.kind_of?(StepperRpi::GPIOAdapter)
-        raise StepperRpi::MotorError, "Invalid GPIO adapter passed! The income adapter is whether nil or isn't inherited from the `StepperRpi::GPIOAdapter` class!"
-      end
-
-      @mode = mode
-      @pins = pins
-      @gpio_adapter = gpio_adapter
+    def initialize(driver:)
+      @driver = driver
       @is_running = false
       @is_connected = false
       @position = 0
       @speed = 1
-      @current_beat = -1
       @is_running_terminated = false
-      @beat_sequence = BEAT_SEQUENCES[mode]
-      @beats_in_sequence = @beat_sequence.count
     end
 
     def connect
       return if is_connected
 
-      pins.each { gpio_adapter.setup_pin(_1) }
+      driver.connect
       @is_connected = true
     end
 
     def disconnect
+      driver.disconnect
       @is_connected = false
     end
 
@@ -70,34 +56,7 @@ module StepperRpi
 
     private
 
-    # [ORANGE, YELLOW, PINK, BLUE]
-    BEAT_SEQUENCES = {
-      StepperRpi::Mode::FULL_STEP => [
-        [1, 0, 1, 0],
-        [0, 1, 1, 0],
-        [0, 1, 0, 1],
-        [1, 0, 0, 1]
-      ],
-      StepperRpi::Mode::HALF_STEP => [
-        [1, 0, 0, 0],
-        [1, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 1],
-        [0, 0, 0, 1],
-        [1, 0, 0, 1]
-      ]
-    }
-
-    attr_reader :mode,
-      :pins,
-      :gpio_adapter,
-      :current_beat,
-      :runner_thread,
-      :beats_in_sequence,
-      :beat_sequence,
-      :is_running_terminated
+    attr_reader :driver, :runner_thread, :is_running_terminated
 
     def run_stepper(number_of_steps)
       is_backward = number_of_steps < 0
@@ -108,19 +67,8 @@ module StepperRpi
       @runner_thread = Thread.new {
         number_of_steps.times do |step_index|
           @position += step_diff
-          @current_beat += step_diff
-          if @current_beat < 0
-            @current_beat = beats_in_sequence - 1
-          elsif @current_beat > beats_in_sequence - 1
-            @current_beat = 0
-          end
-          sequence = beat_sequence[@current_beat]
-          pins.zip(sequence).each do |pin_with_value|
-            pin = pin_with_value[0]
-            value = pin_with_value[1]
 
-            gpio_adapter.set_pin_value(pin, value)
-          end
+          driver.step
 
           if @is_running_terminated
             # Give some time for the motor to complete rotation

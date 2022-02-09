@@ -8,3 +8,14 @@ require 'mocha/minitest'
 
 class DummyGpioAdapter < StepperRpi::GPIOAdapter
 end
+
+class DummyDriver < StepperRpi::Drivers::BaseMotorDriver
+  def connect
+  end
+
+  def disconnect
+  end
+
+  def step(dir:)
+  end
+end
