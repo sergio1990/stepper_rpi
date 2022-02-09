@@ -8,8 +8,8 @@ class TestStepperRpi < Minitest::Test
   end
 
   def test_creating_motor_instance_successfully
-    StepperRpi.configuration.gpio_adapter = DummyGpioAdapter.new
-    motor = StepperRpi.motor(mode: StepperRpi::Mode::FULL_STEP, pins: [1, 2, 3, 4])
+    driver = DummyDriver.new(mode: 0, pins: [1, 2, 3, 4], gpio_adapter: DummyGpioAdapter.new)
+    motor = StepperRpi.motor(driver: driver)
     refute_nil motor
     assert_kind_of StepperRpi::Motor, motor
   end

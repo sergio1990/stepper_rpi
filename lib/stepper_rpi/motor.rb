@@ -1,6 +1,4 @@
-require_relative './modes'
 require_relative './errors'
-require_relative './gpio_adapter'
 
 module StepperRpi
   class Motor
@@ -68,7 +66,7 @@ module StepperRpi
         number_of_steps.times do |step_index|
           @position += step_diff
 
-          driver.step
+          driver.step(dir: step_diff)
 
           if @is_running_terminated
             # Give some time for the motor to complete rotation
