@@ -61,6 +61,7 @@ module StepperRpi
       number_of_steps = number_of_steps.abs
       step_diff = is_backward ? -1 : 1
       @is_running = true
+      speed_delay = 1 / speed.to_f
 
       @runner_thread = Thread.new {
         number_of_steps.times do |step_index|
@@ -80,7 +81,7 @@ module StepperRpi
           if step_index == number_of_steps - 1
             sleep(0.001)
           else
-            sleep(1 / speed.to_f)
+            sleep(speed_delay)
           end
         end  
 
