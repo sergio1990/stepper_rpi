@@ -29,9 +29,14 @@ StepperRpi.configure do |config|
   config.gpio_adapter = RpiGPIOAdapter.new
 end
 
+driver = StepperRpi::Drivers::ULN2003.new(
+  mode: StepperRpi::Drivers::ULN2003::Mode::HALF_STEP,
+  pins: [14, 15, 18, 23],
+  gpio_adapter: RpiGPIOAdapter.new
+)
+
 motor = StepperRpi.motor(
-  mode: StepperRpi::Mode::HALF_STEP,
-  pins: [14, 15, 18, 23]
+  driver: driver
 )
 motor.speed = 70
 
