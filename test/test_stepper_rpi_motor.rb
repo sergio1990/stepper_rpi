@@ -19,5 +19,11 @@ class TestStepperRpiMotor < Minitest::Test
     assert motor.is_connected
     refute motor.is_running
     assert_equal 1, motor.position
+
+    driver.expects(:disconnect).once
+
+    motor.disconnect
+
+    refute motor.is_connected
   end
 end

@@ -23,6 +23,7 @@ module StepperRpi
       end
 
       def disconnect
+        pins.each { gpio_adapter.cleanup_pin(_1) }
       end
 
       def step(dir:)

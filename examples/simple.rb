@@ -1,4 +1,4 @@
-# https://github.com/theovidal/raspi-gpio-rb
+# https://github.com/sergio1990/raspi-gpio-rb
 require 'raspi-gpio'
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
@@ -10,18 +10,22 @@ class RpiGPIOAdapter < StepperRpi::GPIOAdapter
   end
 
   def setup_pin(pin)
-    gpio_pin = GPIO.new(pin, OUT)
+    gpio_pin = GPIO.new(pin, GPIO::OUT)
     # Give some time for the system to create needed files
     # and set proper permissions
     sleep(0.5)
-    gpio_pin.set_mode(OUT)
+    gpio_pin.mode = GPIO::OUT
     @pins[pin] = gpio_pin
+  end
+
+  def cleanup_pin(pin)
+    @pins[pin].cleanup
   end
 
   def set_pin_value(pin, value)
     gpio_pin = @pins[pin]
-    gpio_value = value == 1 ? HIGH : LOW
-    gpio_pin.set_value(gpio_value)
+    gpio_value = value == 1 ? GPIO::HIGH : GPIO::LOW
+    gpio_pin.value = gpio_value
   end
 end
 

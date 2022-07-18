@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stepper_rpi (0.1.0)
+    stepper_rpi (0.2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -12,6 +12,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   minitest (~> 5.0)
