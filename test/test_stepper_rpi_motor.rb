@@ -3,27 +3,27 @@
 require "test_helper"
 
 class TestStepperRpiMotor < Minitest::Test
-  def test_do_steps_successfully
+  def test_connection_flow
     gpio_adapter = DummyGpioAdapter.new
     driver = DummyDriver.new(mode: 0, pins: [1, 2, 3, 4], gpio_adapter: gpio_adapter)
-    motor = StepperRpi::Motor.new(
-      driver: driver
-    )
+    motor = StepperRpi::Motor.new(driver: driver)
+
     driver.expects(:connect).once
-
     motor.connect
-    motor.do_steps(1)
-
-    sleep(0.01) while motor.is_running
-
-    assert motor.is_connected
-    refute motor.is_running
-    assert_equal 1, motor.position
 
     driver.expects(:disconnect).once
-
     motor.disconnect
+  end
 
-    refute motor.is_connected
+  def test_stepping_flow
+    gpio_adapter = DummyGpioAdapter.new
+    driver = DummyDriver.new(mode: 0, pins: [1, 2, 3, 4], gpio_adapter: gpio_adapter)
+    motor = StepperRpi::Motor.new(driver: driver)
+
+    motor.connect
+    
+    driver.expects(:stop).once
+    driver.expects(:do_steps).once
+    motor.do_steps(5)
   end
 end
