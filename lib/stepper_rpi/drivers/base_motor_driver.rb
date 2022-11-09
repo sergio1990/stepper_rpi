@@ -1,5 +1,9 @@
+require_relative '../errors.rb'
+
 module StepperRpi
   module Drivers
+    class Error < ::StepperRpi::Error; end
+
     class BaseMotorDriver
       attr_accessor :speed
       attr_reader :is_running, :position, :is_connected
