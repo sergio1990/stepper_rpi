@@ -56,6 +56,7 @@ to get insights about how to use the library.
 This library was successfully tested using the following hardware combinations:
 
 - Raspberry Pi Zero W v1.1; ULN2003 driver shield; 28BYJ-48-5V stepper motor
+- Raspberry Pi Zero 2 W; DRV8825 driver shield; NEMA14 JK35HS34-1004 stepper motor
 
 ## Contributing
 

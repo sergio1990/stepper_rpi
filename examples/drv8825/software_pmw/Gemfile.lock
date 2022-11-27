@@ -1,0 +1,26 @@
+GIT
+  remote: https://github.com/sergio1990/raspi-gpio-rb.git
+  revision: 5a85dde580886f89c799094a226deff4b8811d58
+  tag: v2.1.0
+  specs:
+    raspi-gpio (2.1.0)
+
+GIT
+  remote: https://github.com/sergio1990/stepper_rpi.git
+  revision: 00cccc00dcd4a3b54c41eea5919e8173f309561b
+  specs:
+    stepper_rpi (0.2.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  armv7l-linux-eabihf
+
+DEPENDENCIES
+  raspi-gpio!
+  stepper_rpi!
+
+BUNDLED WITH
+   2.3.26

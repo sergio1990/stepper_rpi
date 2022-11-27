@@ -1,0 +1,6 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gem "stepper_rpi", github: "sergio1990/stepper_rpi"
+gem "raspi-gpio", github: "sergio1990/raspi-gpio-rb", tag: 'v2.1.0'
