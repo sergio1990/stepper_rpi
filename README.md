@@ -38,7 +38,7 @@ In order to make this library useful for the most possible cases, two abstractio
 The class diagram represents all the mentioned abstractions and their
 relationships with another classes:
 
-![stepper_rpi classes diagram](imgs/stepper_rpi_classes.png)
+![stepper_rpi classes diagram](imgs/stepper_rpi_classes_0_3_0.png)
 
 Hence, in order to use this library the next things should be implemented:
 
