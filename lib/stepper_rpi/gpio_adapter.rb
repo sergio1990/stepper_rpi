@@ -11,5 +11,9 @@ module StepperRpi
     def set_pin_value(pin, value)
       raise NotImplementedError
     end
+
+    def setup_pwm(pwm_channel)
+      raise NotImplementedError
+    end
   end
 end
